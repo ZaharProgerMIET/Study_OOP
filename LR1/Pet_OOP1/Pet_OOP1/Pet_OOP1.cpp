@@ -3,50 +3,111 @@
 #include <clocale>
 #include <cstdlib>
 #include <Windows.h>
+#include <stdlib.h>
+#include <fstream>
 #include "Header.h"
-using namespace std;
+
+using std::ofstream;
+using std::ifstream;
+using std::cout;
+
+using std::string;
+using std::right;
+using std::to_string;
+using std::endl;
+using std::getline;
+using std::cin;
+using std::fixed;
+
 
 int main()
 {
-	setlocale(LC_ALL, "ru");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	int variant;
-	variantMenu();
-	cin >> variant;
+	char variant;
+	ifstream fin;
+	string path = "myFile.txt";
+	fin.open(path);
+	bool flag = false;
+
 	while (1)
 	{
-		if (variant == 1)
-		{
-			cout<< endl;
-			fillProduct();
-		}
+		variantMenu();
+		cin >> variant; cin.ignore();
+	    
+		cout << endl;
 
-		else if (variant == 2)
+		switch (variant)
 		{
-			cout << endl;
-			printmenu();
-			printBazaData();
-			cout<< endl;
-		}
-
-		else if (variant == 3)
+		  case '1':
 		{
-			//delMatrix();
+			  if (!fin.is_open())
+			  {
+				  cout << "Error open\n";
+			  }
+			  else
+			  {
+				  char ch;
+				  if (!fin.get(ch))
+				  {
+					  if (flag == false)
+					  {
+						  cout << "База данных пустая. Введите базу данных\n";
+						  writeOnFile_Empty();
+						  flag = true;
+					  }
+					  else
+					  {
+						  writeOnFile_NotEmpty();
+					  }
+				  }
+				  else
+				  {
+					  writeOnFile_NotEmpty();
+				  }
+			  }
+			
 			break;
 		}
-		else
+		  case '2':
 		{
-			cout<< "Выберите нужную опцию!\n";
+			printmenu();
+			printFromFile();
+			break;
+		}
+		  case '3':
+		{
+			searchProduct();
+			break;
+		}
+		  case '4':
+		{
+
+			break;
+		}
+		  case '5':
+		{
+			//delMatrix();
+			return 0;
+			break;
+		}
+		  default:
+			cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+			cout << "!! Выберите правильную опцию !!" << endl;
+			cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl << endl;
+			break;
+
+
+
 		}
 
-		variantMenu();
-		cin >> variant;
+
+
 
 	}
 
 
-
+	return 0;
 }
 
 
